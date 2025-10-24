@@ -52,104 +52,43 @@
                 <div class="card shadow-lg">
                     <div class="card-header text-white text-center py-3">
                         <h4 class="mb-0">
-                            <i class="fas fa-vote-yea me-2"></i>Enquete Atual
+                            <i class="fas fa-vote-yea me-2"></i>Enquetes Disponíveis
                         </h4>
                     </div>
                     <div class="card-body p-4">
-                        <!-- Título da Enquete -->
-                        <h5 class="card-title text-center mb-4 text-white">
-                            Qual é a sua linguagem de programação favorita?
-                        </h5>
-
-                        <!-- Opções de Voto -->
-                        <div class="vote-options">
-                            <div class="vote-option">
-                                <input type="radio" class="btn-check" name="vote" id="option1" autocomplete="off">
-                                <label class="btn btn-outline-primary w-100 text-start custom-option" for="option1">
-                                    <i class="fab fa-python me-2"></i>Python
-                                </label>
-                            </div>
-                            
-                            <div class="vote-option">
-                                <input type="radio" class="btn-check" name="vote" id="option2" autocomplete="off">
-                                <label class="btn btn-outline-primary w-100 text-start custom-option" for="option2">
-                                    <i class="fab fa-js me-2"></i>JavaScript
-                                </label>
-                            </div>
-                            
-                            <div class="vote-option">
-                                <input type="radio" class="btn-check" name="vote" id="option3" autocomplete="off">
-                                <label class="btn btn-outline-primary w-100 text-start custom-option" for="option3">
-                                    <i class="fab fa-java me-2"></i>Java
-                                </label>
-                            </div>
-                            
-                            <div class="vote-option">
-                                <input type="radio" class="btn-check" name="vote" id="option4" autocomplete="off">
-                                <label class="btn btn-outline-primary w-100 text-start custom-option" for="option4">
-                                    <i class="fab fa-php me-2"></i>PHP
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Botão de Envio -->
-                        <div class="d-grid gap-2 mt-4">
-                            <button type="button" class="btn btn-primary btn-lg">
-                                <i class="fas fa-paper-plane me-2"></i>Enviar Voto
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card de Resultados Parciais -->
-                <div class="card shadow-sm mt-4">
-                    <div class="card-header bg-secondary text-white">
-                        <h5 class="mb-0">
-                            <i class="fas fa-chart-bar me-2"></i>Resultados Parciais
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="results-bar">
-                            <div class="mb-3">
-                                <label class="d-flex justify-content-between">
-                                    <span>Python</span>
-                                    <span>45%</span>
-                                </label>
-                                <div class="progress">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 45%"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="d-flex justify-content-between">
-                                    <span>JavaScript</span>
-                                    <span>30%</span>
-                                </label>
-                                <div class="progress">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 30%"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="d-flex justify-content-between">
-                                    <span>Java</span>
-                                    <span>15%</span>
-                                </label>
-                                <div class="progress">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 15%"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="d-flex justify-content-between">
-                                    <span>PHP</span>
-                                    <span>10%</span>
-                                </label>
-                                <div class="progress">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 10%"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+                        // Lê as enquetes do arquivo JSON
+                        $pollsFile = __DIR__ . '/../data/polls.json';
+                        $polls = file_exists($pollsFile) ? json_decode(file_get_contents($pollsFile), true) : [];
+                        if (empty($polls)) {
+                            echo '<div class="alert alert-info text-center">Nenhuma enquete disponível no momento.</div>';
+                        } else {
+                            foreach ($polls as $pollId => $poll) {
+                                echo '<div class="mb-5">';
+                                echo '<h5 class="card-title text-center mb-4 text-white">' . htmlspecialchars($poll["title"]) . '</h5>';
+                                echo '<form method="post" action="vote.php">';
+                                if (!empty($poll["options"])) {
+                                    echo '<div class="vote-options">';
+                                    foreach ($poll["options"] as $optIdx => $option) {
+                                        $inputId = "poll{$pollId}_option{$optIdx}";
+                                        echo '<div class="vote-option">';
+                                        echo '<input type="radio" class="btn-check" name="vote_option" id="' . $inputId . '" value="' . htmlspecialchars($option) . '" autocomplete="off">';
+                                        echo '<label class="btn btn-outline-primary w-100 text-start custom-option" for="' . $inputId . '">' . htmlspecialchars($option) . '</label>';
+                                        echo '</div>';
+                                    }
+                                    echo '</div>';
+                                }
+                                echo '<input type="hidden" name="poll_id" value="' . htmlspecialchars($pollId) . '">';
+                                echo '<div class="d-grid gap-2 mt-4">';
+                                echo '<button type="submit" class="btn btn-primary btn-lg">';
+                                echo '<i class="fas fa-paper-plane me-2"></i>Enviar Voto';
+                                echo '</button>';
+                                echo '</div>';
+                                echo '</form>';
+                                echo '</div>';
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
