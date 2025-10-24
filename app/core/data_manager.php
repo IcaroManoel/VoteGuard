@@ -1,6 +1,7 @@
 <?php 
     require_once 'settings.php';
-
+    require_once 'core/fraud_protection.php';
+    
     function read_polls() {
         $path = __DIR__ . '/polls.json';
         if (!is_readable($path)) {
@@ -88,5 +89,5 @@
         fclose($file);
     }
 
-    
+
 ?>
