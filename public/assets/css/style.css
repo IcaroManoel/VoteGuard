@@ -201,6 +201,46 @@ label,
     animation: fadeIn 0.6s ease-out;
 }
 
+/* Estilos específicos para cards de enquete */
+.poll-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.poll-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.5) !important;
+}
+
+.poll-card .card-header {
+    padding: 1.5rem;
+    background: var(--darker) !important;
+}
+
+.poll-card .card-title {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+.poll-card .card-body {
+    padding: 1.5rem;
+}
+
+.poll-card .vote-option {
+    margin-bottom: 0.75rem;
+}
+
+.poll-card .custom-option {
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.poll-card .card-footer {
+    padding: 1rem;
+}
+
 /* Resultados */
 .results-bar label {
     margin-bottom: 0.5rem;
